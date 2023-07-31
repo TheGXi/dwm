@@ -1,8 +1,12 @@
 # 打印菜单
 call_menu() {
     echo ' set wallpaper'
-    echo '艹 update statusbar'
-    [ "$(sudo docker ps | grep v2raya)" ] && echo ' close v2raya' || echo ' open v2raya'
+    echo '艹update statusbar'
+    echo ' open idea'
+    echo ' open sql'
+    echo ' open cachekit'
+    echo ' open api'
+    [ "$(ps aux | grep clash)" ] && echo ' close clash' || echo ' open clash'
     [ "$(ps aux | grep picom | grep -v 'grep\|rofi\|nvim')" ] && echo ' close picom' || echo ' open picom'
 }
 
@@ -12,7 +16,7 @@ execute_menu() {
         ' set wallpaper')
             feh --randomize --bg-fill ~/Pictures/wallpaper/*.png
             ;;
-        '艹 update statusbar')
+        '艹update statusbar')
             coproc ($DWM/statusbar/statusbar.sh updateall > /dev/null 2>&1)
             ;;
         ' open v2raya')
@@ -21,11 +25,17 @@ execute_menu() {
         ' close v2raya')
             coproc (sudo docker stop v2raya > /dev/null && $DWM/statusbar/statusbar.sh updateall > /dev/null)
             ;;
-        ' open picom')
-            coproc (picom --experimental-backends --config ~/scripts/config/picom.conf > /dev/null 2>&1)
+        ' open idea')
+            coproc (/opt/intellij-ultimate/bin/idea.sh > /dev/null 2>&1 &)
             ;;
-        ' close picom')
-            killall picom
+        ' open sql')
+            coproc (/opt/datagrip/bin/datagrip.sh > /dev/null 2>&1 &)
+            ;;
+        ' open cachekit')
+            coproc (/opt/redis-assistant/RedisAssistant >/dev/null 2>&1 &)
+            ;;
+        ' open api')
+            coproc (cd /opt/postcat-v0.5.1 && yarn start:electron >/dev/null 2>&1 &)
             ;;
     esac
 }
